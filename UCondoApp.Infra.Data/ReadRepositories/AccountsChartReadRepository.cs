@@ -24,7 +24,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.Code,
                 a.Name,
                 a.AccountType,
-                a.AcceptsRelease
+                a.AcceptsReleases
             FROM 
                 AccountsChart a
             WHERE 
@@ -48,7 +48,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.Code,
                 a.Name,
                 a.AccountType,
-                a.AcceptsRelease
+                a.AcceptsReleases
             FROM 
                 AccountsChart a";
 
@@ -67,7 +67,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.Code,
                 a.Name,
                 a.AccountType,
-                a.AcceptsRelease
+                a.AcceptsReleases
             FROM 
                 AccountsChart a
             WHERE
@@ -82,5 +82,29 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
 
         return query
             .ToList();
+    }
+
+    public async Task<AccountsChartDto?> GetByCode(string code)
+    {
+        var sql = @"
+            SELECT 
+                a.AccountsChartId AS Id,
+                a.ParentAccountId,
+                a.Code,
+                a.Name,
+                a.AccountType,
+                a.AcceptsReleases
+            FROM 
+                AccountsChart a
+            WHERE
+                a.Code = @Code";
+
+        var response = await DbConnection.QueryFirstOrDefaultAsync<AccountsChartDto>(sql,
+            new
+            {
+                code
+            });
+
+        return response;
     }
 }

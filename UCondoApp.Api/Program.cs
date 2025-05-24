@@ -1,3 +1,4 @@
+using UCondoApp.Api.Extensions;
 using UCondoApp.Application.Extensions;
 using UCondoApp.Infra.Data.Extensions;
 
@@ -22,5 +23,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MigrateDatabase();
 
 app.Run();

@@ -4,9 +4,9 @@ using UCondoApp.CrossCutting.Dtos;
 
 namespace UCondoApp.Application.Mapping;
 
-internal class UCondoApplicationMappingProfile : Profile
+public class UCondoApplicationMappingProfile : Profile
 {
-    internal UCondoApplicationMappingProfile()
+    public UCondoApplicationMappingProfile()
     {
         CreateMap<AccountsChartDto, GetAllAccountsChartResponseQuery>();
     }

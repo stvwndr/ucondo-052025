@@ -9,4 +9,5 @@ public interface IAccountsChartReadRepository
     Task<AccountsChartDto?> GetById(Guid id);
     Task<IList<AccountsChartDto>> GetAll();
     Task<IList<AccountsChartDto>> GetAllByPartialName(string partialName);
+    Task<AccountsChartDto?> GetByCode(string code);
 }

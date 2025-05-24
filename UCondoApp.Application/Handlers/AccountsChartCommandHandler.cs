@@ -27,15 +27,11 @@ public class AccountsChartCommandHandler : BaseCommandHandler,
 
     public async Task<CreateAccountChartResponseCommand?> Handle(CreateAccountsChartRequestCommand request, CancellationToken cancellationToken)
     {
-        //validações aqui
-        //if (await _accountsChartReadRepository.AnyByIntegrationSettingCompanyAndModel((UniqueInvoiceSettingDto)request))
-        //{
-        //    AddError(Domain.Entities.InvoiceSetting.Error.InvoiceSettingAlreadyExistsWithParameters,
-        //        request.FiscalIntegrationSettingId,
-        //        request.CompanyId,
-        //        request.InvoiceModel);
-        //    return ValidationResult;
-        //}
+        if (!await ValidateInsertOperation(request))
+        {
+            return default;
+        }
+
 
         var account = AccountsChartFactory.CreateAccountsChartEntityFactory(request);
 
@@ -51,12 +47,11 @@ public class AccountsChartCommandHandler : BaseCommandHandler,
 
     public async Task<DeleteAccountChartResponseCommand?> Handle(DeleteAccountsChartRequestCommand request, CancellationToken cancellationToken)
     {
-        if (!await _accountsChartReadRepository.AnyById(request.Id))
+        if (!await ValidateDeleteOperation(request))
         {
-            AddError(AccountsChart.Messages.AccountsChartNotFoundMessage(request.Id));
             return default;
         }
-        
+
 
         await _accountsChartRepository.DeleteEntity(request.Id);
 
@@ -66,5 +61,46 @@ public class AccountsChartCommandHandler : BaseCommandHandler,
         }
 
         return default;
+    }
+
+    private async Task<bool> ValidateDeleteOperation(DeleteAccountsChartRequestCommand request)
+    {
+        if (!await _accountsChartReadRepository.AnyById(request.Id))
+        {
+            AddError(AccountsChart.Messages.AccountsChartNotFoundMessage(request.Id));
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task<bool> ValidateInsertOperation(CreateAccountsChartRequestCommand request)
+    {
+        var foundAccount = await _accountsChartReadRepository.GetByCode(request.Code!);
+        if (foundAccount != null)
+        {
+            AddError(AccountsChart.Messages.AccountsChartAlreadyExistsMessage(request.Code!));
+            return false;
+        }
+
+
+        var parentCode = AccountsChart.GetParentCode(request.Code!);
+        var parentAccount = parentCode != null
+            ? await _accountsChartReadRepository.GetByCode(parentCode)
+            : default;
+
+        if (parentAccount != null && parentAccount.AcceptsReleases)
+        {
+            AddError(AccountsChart.Messages.AccountsChartParentAcceptsReleasesMessage(parentCode!));
+            return false;
+        }
+
+        if (parentAccount != null && parentAccount.AccountType != request.AccountType)
+        {
+            AddError(AccountsChart.Messages.AccountsChartTypeMustBeTheSameOfParentMessage(parentAccount.AccountType.ToString("G")));
+            return false;
+        }
+
+        return true;
     }
 }

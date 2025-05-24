@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using UCondoApp.Application.Mapping;
+using UCondoApp.Domain.Services.Notifications;
+using UCondoApp.Domain.Services.Notifications.Interfaces;
 
 namespace UCondoApp.Application.Extensions;
 
@@ -10,10 +12,16 @@ public static class ServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull(services, nameof(services));
 
+        services.ConfigureDomain();
         services.ConfigureMediatR();
         services.ConfigureAutoMapper();
 
         return services;
+    }
+
+    private static void ConfigureDomain(this IServiceCollection services)
+    {
+        services.AddScoped<INotificationHandler, NotificationHandler>();
     }
 
     private static void ConfigureMediatR(this IServiceCollection services)

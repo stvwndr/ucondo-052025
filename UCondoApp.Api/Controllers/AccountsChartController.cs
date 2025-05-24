@@ -27,7 +27,7 @@ public class AccountsChartController : ControllerBase
         return BadRequest(notificationHandler.NotificationResponse);
     }
 
-    [HttpGet("find/{partialname}")]
+    [HttpGet("search")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
