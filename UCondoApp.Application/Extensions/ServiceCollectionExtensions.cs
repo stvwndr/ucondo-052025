@@ -34,11 +34,6 @@ public static class ServiceCollectionExtensions
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
-
-        FluentValidation
-            .AssemblyScanner
-            .FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
-            .ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
     }
 
     private static void ConfigureAutoMapper(this IServiceCollection services)

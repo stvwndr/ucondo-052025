@@ -59,18 +59,6 @@ public class AccountsChartController : ControllerBase
         [FromServices] INotificationHandler notificationHandler,
         [FromServices] IMediator mediator)
     {
-        if (!ModelState.IsValid)
-        {
-            var errors = ModelState.Values.SelectMany(e => e.Errors);
-            foreach (var error in errors)
-            {
-                notificationHandler.AddNotification(error.ErrorMessage);
-            }
-
-            return BadRequest(notificationHandler.NotificationResponse);
-        }
-
-
         var response = await mediator.Send(command);
 
         if (!notificationHandler.HasNotifications)
