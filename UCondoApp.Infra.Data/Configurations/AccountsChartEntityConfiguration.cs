@@ -15,6 +15,7 @@ public class AccountsChartEntityConfiguration : IEntityTypeConfiguration<Account
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("accountschartid").IsRequired();
         builder.Property(x => x.Code).HasMaxLength(30).IsRequired();
+        builder.Property(x => x.FormattedCode).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Name).HasMaxLength(100).IsRequired();
         builder.Property(x => x.AccountType)
             .IsRequired()

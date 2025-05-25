@@ -8,7 +8,7 @@ public static class AccountsChartFactory
     public static AccountsChart CreateAccountsChartEntityFactory(
             CreateAccountsChartRequestCommand command)
     {
-        var account =  new AccountsChart(
+        var account = new AccountsChart(
             parentAccountId: command.ParentAccountId,
             code: command.Code!,
             name: command.Name!,

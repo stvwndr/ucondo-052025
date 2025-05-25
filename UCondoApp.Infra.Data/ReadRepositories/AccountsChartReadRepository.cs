@@ -22,6 +22,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.AccountsChartId AS Id,
                 a.ParentAccountId,
                 a.Code,
+                a.FormattedCode,
                 a.Name,
                 a.AccountType,
                 a.AcceptsReleases
@@ -46,6 +47,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.AccountsChartId AS Id,
                 a.ParentAccountId,
                 a.Code,
+                a.FormattedCode,
                 a.Name,
                 a.AccountType,
                 a.AcceptsReleases
@@ -65,6 +67,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.AccountsChartId AS Id,
                 a.ParentAccountId,
                 a.Code,
+                a.FormattedCode,
                 a.Name,
                 a.AccountType,
                 a.AcceptsReleases
@@ -91,6 +94,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.AccountsChartId AS Id,
                 a.ParentAccountId,
                 a.Code,
+                a.FormattedCode,
                 a.Name,
                 a.AccountType,
                 a.AcceptsReleases
@@ -107,4 +111,49 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
 
         return response;
     }
+
+    public async Task<AccountsChartDto?> GetMaxCode()
+    {
+        var sql = @"
+            SELECT 
+                MAX(a.FormattedCode) AS FormattedCode
+            FROM 
+                AccountsChart a";
+
+        var response = await DbConnection.QueryFirstOrDefaultAsync<AccountsChartDto>(sql);
+
+        return !string.IsNullOrWhiteSpace(response?.FormattedCode)
+            ? response
+            : default;
+    }
+
+    public async Task<IList<AccountsChartDto>> GetMaxCode(string parentCode, string rootCode)
+    {
+        var sql = @"
+            SELECT 
+                MAX(a.FormattedCode) AS FormattedCode
+            FROM 
+                AccountsChart a
+            WHERE
+                a.Code LIKE @ParentCode
+            UNION
+            SELECT 
+                MAX(a.FormattedCode) AS FormattedCode
+            FROM 
+                AccountsChart a
+            WHERE
+                a.Code LIKE @RootCode";
+
+        var query = await DbConnection.QueryAsync<AccountsChartDto>(sql,
+            new
+            {
+                ParentCode = $"{parentCode}%",
+                RootCode = $"{rootCode}%"
+            });
+
+        return query
+            .Where(a => !string.IsNullOrWhiteSpace(a.FormattedCode))
+            .ToList();
+    }
+
 }

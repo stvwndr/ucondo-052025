@@ -44,6 +44,12 @@ namespace UCondoApp.Infra.Data.Migrations
                         .HasColumnType("character varying(30)")
                         .HasColumnName("code");
 
+                    b.Property<string>("FormattedCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("formattedcode");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)

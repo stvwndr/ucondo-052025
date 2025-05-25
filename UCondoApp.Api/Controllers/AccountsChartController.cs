@@ -89,4 +89,25 @@ public class AccountsChartController : ControllerBase
 
         return BadRequest(notificationHandler.NotificationResponse);
     }
+
+    [HttpGet("next-code")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetNextCode(
+        [FromQuery] string? parent,
+        [FromServices] INotificationHandler notificationHandler,
+        [FromServices] IMediator mediator)
+    {
+        var response = await mediator.Send(new GetNextCodeRequestQuery
+        {
+            ParentCode = parent
+        });
+
+        if (!notificationHandler.HasNotifications)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest(notificationHandler.NotificationResponse);
+    }
 }

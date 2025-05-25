@@ -12,7 +12,7 @@ using UCondoApp.Infra.Data.Contexts;
 namespace UCondoApp.Infra.Data.Migrations
 {
     [DbContext(typeof(AccountsChartDbContext))]
-    [Migration("20250524182237_InitialSetup")]
+    [Migration("20250525205758_InitialSetup")]
     partial class InitialSetup
     {
         /// <inheritdoc />
@@ -46,6 +46,12 @@ namespace UCondoApp.Infra.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
                         .HasColumnName("code");
+
+                    b.Property<string>("FormattedCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("formattedcode");
 
                     b.Property<string>("Name")
                         .IsRequired()

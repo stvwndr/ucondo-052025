@@ -41,7 +41,12 @@ public class AccountsChartService : IAccountsChartService
         }
 
         var parentAccount = await RetrieveParentAccount(request);
-        if (parentAccount != null)
+        if (parentAccount == null && request.Code!.Contains("."))
+        {
+            _notificationHandler.AddNotification(AccountsChart.Messages.AccountsChartParentCodeNotFound(request.ParentCode!));
+            return false;
+        }
+        else if (parentAccount != null)
         {
             request.ParentAccountId = parentAccount.Id;
 

@@ -19,5 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\UCondoApp.CrossCutting\UCondoApp.CrossCutting.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
   
 </Project>

@@ -18,6 +18,7 @@ namespace UCondoApp.Infra.Data.Migrations
                     accountschartid = table.Column<Guid>(type: "uuid", nullable: false),
                     parentaccountid = table.Column<Guid>(type: "uuid", nullable: true),
                     code = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    formattedcode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     accounttype = table.Column<string>(type: "varchar(30)", nullable: false),
                     acceptsreleases = table.Column<bool>(type: "boolean", nullable: false)
