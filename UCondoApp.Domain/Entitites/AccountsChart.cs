@@ -30,7 +30,7 @@ public class AccountsChart : BaseEntity
     }
 
 
-    public static string? GetParentCode(string code)
+    public static string? ExtractParentCode(string code)
     {
         var splited = code!.Split(".");
         var parentCode = splited.Length > 1
@@ -46,5 +46,8 @@ public class AccountsChart : BaseEntity
         public static string AccountsChartParentAcceptsReleasesMessage(string code) => $"A conta com código {code} aceita lançamentos, por isso não pode ser pai da conta que está sendo cadastrada.";
         public static string AccountsChartAlreadyExistsMessage(string code) => $"Já existe uma conta com código {code}.";
         public static string AccountsChartTypeMustBeTheSameOfParentMessage(string type) => $"O tipo de conta deve ser o mesmo da conta pai: {type}.";
+        public static string AccountsChartCodeIsMandatory => "O código da conta deve ser informado.";
+        public static string AccountsChartNameIsMandatory => "O nome da conta deve ser informado.";
+        public static string AccountsChartTypeIsMandatory => "O tipo da conta deve ser informado.";
     }
 }

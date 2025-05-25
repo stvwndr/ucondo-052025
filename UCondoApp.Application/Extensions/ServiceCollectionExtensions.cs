@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using UCondoApp.Application.Interfaces;
 using UCondoApp.Application.Mapping;
+using UCondoApp.Application.Services;
 using UCondoApp.Domain.Services.Notifications;
 using UCondoApp.Domain.Services.Notifications.Interfaces;
 
@@ -16,6 +18,8 @@ public static class ServiceCollectionExtensions
         services.ConfigureMediatR();
         services.ConfigureAutoMapper();
 
+        services.AddScoped<IAccountsChartService, AccountsChartService>();
+
         return services;
     }
 
@@ -30,6 +34,11 @@ public static class ServiceCollectionExtensions
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
+
+        FluentValidation
+            .AssemblyScanner
+            .FindValidatorsInAssembly(Assembly.GetExecutingAssembly())
+            .ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
     }
 
     private static void ConfigureAutoMapper(this IServiceCollection services)
