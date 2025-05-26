@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UCondoApp.Infra.Data.Configurations;
-using UCondoApp.Infra.Data.UoW.Interfaces;
+using UCondoApp.Infra.Data.Uow.Interfaces;
 
 namespace UCondoApp.Infra.Data.Contexts;
 

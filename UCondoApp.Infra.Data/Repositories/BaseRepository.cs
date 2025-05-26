@@ -2,7 +2,7 @@
 using UCondoApp.Domain.Entitites;
 using UCondoApp.Infra.Data.Contexts;
 using UCondoApp.Infra.Data.Interfaces.Repositories;
-using UCondoApp.Infra.Data.UoW.Interfaces;
+using UCondoApp.Infra.Data.Uow.Interfaces;
 
 namespace UCondoApp.Infra.Data.Repositories;
 

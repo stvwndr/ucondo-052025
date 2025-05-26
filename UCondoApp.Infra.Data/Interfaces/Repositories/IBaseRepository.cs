@@ -1,4 +1,4 @@
-﻿using UCondoApp.Infra.Data.UoW.Interfaces;
+﻿using UCondoApp.Infra.Data.Uow.Interfaces;
 
 namespace UCondoApp.Infra.Data.Interfaces.Repositories;
 

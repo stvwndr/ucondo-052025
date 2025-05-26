@@ -1,5 +1,5 @@
 ﻿using UCondoApp.Domain.Services.Notifications.Interfaces;
-using UCondoApp.Infra.Data.UoW.Interfaces;
+using UCondoApp.Infra.Data.Uow.Interfaces;
 
 namespace UCondoApp.Application.Handlers;
 

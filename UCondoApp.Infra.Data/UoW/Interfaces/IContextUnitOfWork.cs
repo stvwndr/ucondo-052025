@@ -1,4 +1,4 @@
-﻿namespace UCondoApp.Infra.Data.UoW.Interfaces;
+﻿namespace UCondoApp.Infra.Data.Uow.Interfaces;
 
 public interface IContextUnitOfWork : IDisposable
 {
