@@ -11,7 +11,8 @@ namespace UCondoApp.Application.Handlers;
 
 public class AccountsChartQueryHandler : BaseCommandHandler,
     IRequestHandler<GetAllAccountsChartRequestQuery, IList<GetAllAccountsChartResponseQuery>>,
-    IRequestHandler<GetAllAccountsChartsByPartialNameRequestQuery, IList<GetAllAccountsChartResponseQuery>>,
+    IRequestHandler<GetAllAccountsChartByPartialNameRequestQuery, IList<GetAllAccountsChartResponseQuery>>,
+    IRequestHandler<GetAllParentAccountsChartRequestQuery, IList<GetAllAccountsChartResponseQuery>>,
     IRequestHandler<GetNextCodeRequestQuery, GetNextCodeResponseQuery?>
 {
     private readonly IAccountsChartReadRepository _accountsChartReadRepository;
@@ -35,11 +36,20 @@ public class AccountsChartQueryHandler : BaseCommandHandler,
             .ToList();
     }
 
-    public async Task<IList<GetAllAccountsChartResponseQuery>> Handle(GetAllAccountsChartsByPartialNameRequestQuery request, CancellationToken cancellationToken)
+    public async Task<IList<GetAllAccountsChartResponseQuery>> Handle(GetAllAccountsChartByPartialNameRequestQuery request, CancellationToken cancellationToken)
     {
         var accountList = string.IsNullOrWhiteSpace(request.PartialName)
             ? await _accountsChartReadRepository.GetAll()
             : await _accountsChartReadRepository.GetAllByPartialName(request.PartialName!);
+
+        return accountList
+            .Select(_mapper.Map<GetAllAccountsChartResponseQuery>)
+            .ToList();
+    }
+
+    public async Task<IList<GetAllAccountsChartResponseQuery>> Handle(GetAllParentAccountsChartRequestQuery request, CancellationToken cancellationToken)
+    {
+        var accountList = await _accountsChartReadRepository.GetAllParent();
 
         return accountList
             .Select(_mapper.Map<GetAllAccountsChartResponseQuery>)
@@ -73,7 +83,7 @@ public class AccountsChartQueryHandler : BaseCommandHandler,
 
 
         return currentMaxAccount == null
-            ? new GetNextCodeResponseQuery(code: "1")
-            : new GetNextCodeResponseQuery(code: AccountsChart.RetrieveNextCode(currentMaxAccount.FormattedCode!));
+            ? new GetNextCodeResponseQuery(nextCode: "1")
+            : new GetNextCodeResponseQuery(nextCode: AccountsChart.RetrieveNextCode(currentMaxAccount.FormattedCode!));
     }
 }

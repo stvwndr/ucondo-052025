@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UCondoApp.Application.Commands.Requests;
+using UCondoApp.Application.Commands.Responses;
 using UCondoApp.Application.Queries.Requests;
+using UCondoApp.Application.Queries.Responses;
 using UCondoApp.Domain.Services.Notifications.Interfaces;
+using UCondoApp.Domain.Services.Notifications.Messages;
 
 namespace UCondoApp.Api.Controllers;
 
@@ -11,8 +14,8 @@ namespace UCondoApp.Api.Controllers;
 public class AccountsChartController : ControllerBase
 {
     [HttpGet()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IList<GetAllAccountsChartResponseQuery>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll(
             [FromServices] INotificationHandler notificationHandler,
             [FromServices] IMediator mediator)
@@ -28,18 +31,15 @@ public class AccountsChartController : ControllerBase
     }
 
     [HttpGet("search")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetAllAccountsChartResponseQuery), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetByPartialName(
-        [FromQuery] string partialName,
+        [FromQuery] GetAllAccountsChartByPartialNameRequestQuery command,
         [FromServices] INotificationHandler notificationHandler,
         [FromServices] IMediator mediator)
     {
-        var response = await mediator.Send(new GetAllAccountsChartsByPartialNameRequestQuery
-        {
-            PartialName = partialName
-        });
+        var response = await mediator.Send(command);
 
         if (!notificationHandler.HasNotifications)
         {
@@ -51,9 +51,27 @@ public class AccountsChartController : ControllerBase
         return BadRequest(notificationHandler.NotificationResponse);
     }
 
+
+    [HttpGet("parent")]
+    [ProducesResponseType(typeof(GetAllAccountsChartResponseQuery), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetParent(
+        [FromServices] INotificationHandler notificationHandler,
+        [FromServices] IMediator mediator)
+    {
+        var response = await mediator.Send(new GetAllParentAccountsChartRequestQuery());
+
+        if (!notificationHandler.HasNotifications)
+        {
+            return Ok(response);
+        }
+
+        return BadRequest(notificationHandler.NotificationResponse);
+    }
+
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(CreateAccountChartResponseCommand), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(
         [FromBody] CreateAccountsChartRequestCommand command,
         [FromServices] INotificationHandler notificationHandler,
@@ -71,7 +89,7 @@ public class AccountsChartController : ControllerBase
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete(
     [FromRoute] Guid id,
     [FromServices] INotificationHandler notificationHandler,
@@ -91,8 +109,8 @@ public class AccountsChartController : ControllerBase
     }
 
     [HttpGet("next-code")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(GetNextCodeResponseQuery), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetNextCode(
         [FromQuery] string? parent,
         [FromServices] INotificationHandler notificationHandler,

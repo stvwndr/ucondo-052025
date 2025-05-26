@@ -88,10 +88,14 @@ public class AccountsChart : BaseEntity
         public static string AccountsChartParentAcceptsReleasesMessage(string code) => $"A conta com código {code} aceita lançamentos, por isso não pode ser pai da conta que está sendo cadastrada.";
         public static string AccountsChartAlreadyExistsMessage(string code) => $"Já existe uma conta com código {code}.";
         public static string AccountsChartTypeMustBeTheSameOfParentMessage(string type) => $"O tipo de conta deve ser o mesmo da conta pai: {type}.";
-        public static string AccountsChartParentCodeNotFound(string code) => $"Não foi encontrada conta com o código pai {code} na base de dados.";
+        public static string AccountsChartParentCodeNotFound(string code) => $"Não foi encontrada conta pai com o código {code} na base de dados.";
+        public static string AccountsChartParentIdNotFound(Guid id) => $"Não foi encontrada conta pai com ID {id} na base de dados.";
+        public static string AccountsChartCodeIsInvalid(string code) => $"O código {code} não é um número válido.";
 
         public const string AccountsChartCodeIsMandatory = "O código da conta deve ser informado.";
         public const string AccountsChartNameIsMandatory = "O nome da conta deve ser informado.";
         public const string AccountsChartTypeIsMandatory = "O tipo da conta deve ser informado.";
+        public const string AccountsChartCodeOutOfRange = $"O código deve ser menor ou igual a '999'.";
+        public const string AccountsChartCodeMustBeTheSameOfParentMessage = $"O código da conta deve ter o mesmo prefixo da conta pai.";
     }
 }

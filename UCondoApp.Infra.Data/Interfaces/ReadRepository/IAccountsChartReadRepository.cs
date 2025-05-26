@@ -8,8 +8,9 @@ public interface IAccountsChartReadRepository
     Task<bool> AnyById(Guid id);
     Task<AccountsChartDto?> GetById(Guid id);
     Task<IList<AccountsChartDto>> GetAll();
+    Task<IList<AccountsChartDto>> GetAllParent();
     Task<IList<AccountsChartDto>> GetAllByPartialName(string partialName);
     Task<AccountsChartDto?> GetByCode(string code);
-    Task<AccountsChartDto> GetMaxCode();
+    Task<AccountsChartDto?> GetMaxCode();
     Task<IList<AccountsChartDto>> GetMaxCode(string parentCode, string rootCode);
 }

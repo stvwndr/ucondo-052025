@@ -15,6 +15,7 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
     {
         return (await GetById(id)) != null;
     }
+
     public async Task<AccountsChartDto?> GetById(Guid id)
     {
         var sql = @"
@@ -52,7 +53,33 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 a.AccountType,
                 a.AcceptsReleases
             FROM 
-                AccountsChart a";
+                AccountsChart a
+            ORDER BY
+                a.FormattedCode";
+
+        var query = await DbConnection.QueryAsync<AccountsChartDto>(sql);
+
+        return query
+            .ToList();
+    }
+
+    public async Task<IList<AccountsChartDto>> GetAllParent()
+    {
+        var sql = @"
+            SELECT 
+                a.AccountsChartId AS Id,
+                a.ParentAccountId,
+                a.Code,
+                a.FormattedCode,
+                a.Name,
+                a.AccountType,
+                a.AcceptsReleases
+            FROM 
+                AccountsChart a
+            WHERE
+                a.AcceptsReleases = false
+            ORDER BY
+                a.FormattedCode";
 
         var query = await DbConnection.QueryAsync<AccountsChartDto>(sql);
 
@@ -75,7 +102,9 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
                 AccountsChart a
             WHERE
                 a.Code ILIKE @Filter
-                OR a.Name ILIKE @Filter";
+                OR a.Name ILIKE @Filter
+        ORDER BY
+                a.FormattedCode";
 
         var query = await DbConnection.QueryAsync<AccountsChartDto>(sql,
             new 
