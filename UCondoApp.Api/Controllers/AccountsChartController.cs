@@ -13,7 +13,7 @@ namespace UCondoApp.Api.Controllers;
 [Route("api/accounts-chart")]
 public class AccountsChartController : ControllerBase
 {
-    [HttpGet()]
+    [HttpGet]
     [ProducesResponseType(typeof(IList<GetAllAccountsChartResponseQuery>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(NotificationErrorMessage), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll(

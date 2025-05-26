@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "6f675845-6af6-46aa-aec8-d8cdb4d03da5",
+		"name": "uCondo-Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4960657"
+	},
+	"item": [
+		{
+			"name": "GetAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/accounts-chart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"accounts-chart"
+					]
+				},
+				"description": "### GET /api/accounts-chart\n\nRetorna a lista das contas cadastradas.\n\n#### Request\n\nSem parâmetros.\n\n#### Response\n\nJSON com o seguinte schema:\n\n``` json\n[\n    {\n        \"id\": \"\",\n        \"code\": \"\",\n        \"name\": \"\",\n        \"formattedName\": \"\"\n    }\n]\n\n ```\n\n- `id` (string): identificador da conta.\n    \n- `code` (string): código único da conta.\n    \n- `name` (string): nome da conta.\n    \n- `formattedName` (string): concatenação entre o código e o nome para ser exibido."
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllParent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/accounts-chart/parent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"accounts-chart",
+						"parent"
+					]
+				},
+				"description": "### Retrieve Parent Accounts Chart\n\nRetorna a lista das contas pais, ou seja, as contas que não aceitam lançamentos.\n\n#### Request\n\n- Method: GET\n    \n- URL: `http://localhost:5000/api/accounts-chart/parent`\n    \n\n#### Response\n\nJSON com o seguinte schema:\n\n``` json\n[\n  {\n    \"id\": \"\",\n    \"code\": \"\",\n    \"name\": \"\",\n    \"formattedName\": \"\"\n  }\n]\n\n ```\n\n- `id` (string): identificador da conta.\n    \n- `code` (string): código único da conta.\n    \n- `name` (string): nome da conta.\n    \n- `formattedName` (string): concatenação entre o código e o nome para ser exibido."
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  //\"parentAccountId\": \"c81bc7ba-8698-464d-a75d-e66c45e79d58\",\r\n  \"code\": \"3.1\",\r\n  \"parentCode\": \"3\",\r\n  \"name\": \"T3.1\",\r\n  \"accountType\": \"Income\",\r\n  \"acceptsReleases\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/accounts-chart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"accounts-chart"
+					]
+				},
+				"description": "### Create Account Chart\n\nCria uma nova conta.\n\n#### Request Body\n\n- `code` (string) - código único da nova conta.\n    \n- `parentCode` (string) - código da conta pai (opcional).\n    \n- `parentAccountId` (guid) - id da conta pai (opcional).\n    \n- `name` (string) - nome da conta.\n    \n- `accountType` (string) - tipo da conta: \"Income\" ou \"Expense\" (receita ou despesa, respectivamente).\n    \n- `acceptsReleases` (boolean) - indica se a conta aceita lançamentos.\n    \n\nCaso seja informado o parentAccountId, o sistema utilizará esse campo para encontrar a conta pai. Caso contrário, usará o parentCode, se tiver sido informado.\n\n####   \nResponse\n\nJSON com o identificador da conta criada:\n\n``` json\n{\n    \"id\": \"\"\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/accounts-chart/df5dcc31-fc99-4b19-8cfc-f92d60d7b5f7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"accounts-chart",
+						"df5dcc31-fc99-4b19-8cfc-f92d60d7b5f7"
+					]
+				},
+				"description": "### Delete Account Chart\n\nRemove uma conta da base de dados.\n\n#### Request Body\n\nO ID da conta deve ser passado na rota.  \nNão requer parâmetros no body.  \n\n#### Response\n\n200 - OK ou BadRequest, caso a conta não exista na base de dados."
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/accounts-chart/search?partialName=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"accounts-chart",
+						"search"
+					],
+					"query": [
+						{
+							"key": "partialName",
+							"value": "1"
+						}
+					]
+				},
+				"description": "### Get Accounts Chart Search\n\nBusca pelo início do nome ou do código da conta.\n\n**Request Parameters**\n\n- `partialName` (string, required): parte inicial do nome ou do código.\n    \n\n**Response**  \nA lista das contas encontradas."
+			},
+			"response": []
+		},
+		{
+			"name": "GetNextCode",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/accounts-chart/next-code?parent=9.9.999.999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"accounts-chart",
+						"next-code"
+					],
+					"query": [
+						{
+							"key": "parent",
+							"value": "9.9.999.999"
+						}
+					]
+				},
+				"description": "### Get Next Account Code\n\nBusca o próximo código disponível no plano de contas\n\n#### Request\n\n- Method: GET\n    \n- Endpoint: `http://localhost:5000/api/accounts-chart/next-code`\n    \n- Query Parameters:\n    \n    - `parent` (string, required): código da conta pai.\n        \n\n#### Response\n\nJSON com o seguinte schema:\n\n``` json\n{\n    \"nextCode\": \"\"\n}\n\n ```"
+			},
+			"response": []
+		}
+	]
+}
