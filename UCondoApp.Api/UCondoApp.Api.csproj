@@ -18,4 +18,13 @@
     <ProjectReference Include="..\UCondoApp.Application\UCondoApp.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="uCondo.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="uCondo_log.ldf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

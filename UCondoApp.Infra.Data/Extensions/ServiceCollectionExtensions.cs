@@ -18,8 +18,9 @@ public static class ServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
 
         services.AddDbContext<AccountsChartDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString(DefaultConnectionStringKeyName))
+            options.UseSqlServer(configuration.GetConnectionString(DefaultConnectionStringKeyName))
                 .UseLowerCaseNamingConvention());
+
 
         services.AddScoped<IAccountsChartReadRepository, AccountsChartReadRepository>();
         services.AddScoped<IAccountsChartRepository, AccountsChartRepository>();

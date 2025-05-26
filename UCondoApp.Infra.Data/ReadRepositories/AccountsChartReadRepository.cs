@@ -77,11 +77,15 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
             FROM 
                 AccountsChart a
             WHERE
-                a.AcceptsReleases = false
+                a.AcceptsReleases = @AcceptsReleases
             ORDER BY
                 a.FormattedCode";
 
-        var query = await DbConnection.QueryAsync<AccountsChartDto>(sql);
+        var query = await DbConnection.QueryAsync<AccountsChartDto>(sql,
+            new
+            {
+                AcceptsReleases = 0 //false no SQL Server
+            });
 
         return query
             .ToList();
@@ -101,8 +105,8 @@ public class AccountsChartReadRepository : BaseReadRepository, IAccountsChartRea
             FROM 
                 AccountsChart a
             WHERE
-                a.Code ILIKE @Filter
-                OR a.Name ILIKE @Filter
+                a.Code LIKE @Filter
+                OR a.Name LIKE @Filter
         ORDER BY
                 a.FormattedCode";
 
